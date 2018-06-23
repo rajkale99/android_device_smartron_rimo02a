@@ -232,4 +232,4 @@ WIFI_DRIVER_FW_PATH_AP      := "ap"
 WIFI_DRIVER_FW_PATH_STA     := "sta"
 
 # Inherit from the proprietary version
--include vendor/smartron/msm8956-common/BoardConfigVendor.mk
+#-include vendor/smartron/msm8956-common/BoardConfigVendor.mk
