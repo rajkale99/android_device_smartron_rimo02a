@@ -292,6 +292,15 @@
         </interface>
     </hal>
     <hal format="hidl">
+        <name>android.hardware.wifi</name>
+        <transport>hwbinder</transport>
+        <version>1.2</version>
+        <interface>
+            <name>IWifi</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
         <name>android.hardware.wifi.hostapd</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
@@ -301,11 +310,11 @@
         </interface>
     </hal>
     <hal format="hidl">
-        <name>android.hardware.wifi</name>
+        <name>android.hardware.wifi.offload</name>
         <transport>hwbinder</transport>
-        <version>1.2</version>
+        <version>1.0</version>
         <interface>
-            <name>IWifi</name>
+            <name>IOffload</name>
             <instance>default</instance>
         </interface>
     </hal>
