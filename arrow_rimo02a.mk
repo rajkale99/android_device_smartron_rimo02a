@@ -17,23 +17,21 @@
 # Inherit device configuration
 $(call inherit-product, device/smartron/rimo02a/full_rimo02a.mk)
 
-# Inherit some common LineageOS stuff.
-$(call inherit-product, vendor/aosp/common.mk)
+# Inherit some common ArrowOS stuff.
+$(call inherit-product, vendor/arrow/config/common.mk)
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := rimo02a
-PRODUCT_NAME := aosp_rimo02a
+PRODUCT_NAME := arrow_rimo02a
 PRODUCT_BRAND := smartron
-TARGET DEVICE := rimo02a
+PRODUCT_MANUFACTURER := Smartron
 
-TARGET_BOOT_ANIMATION_RES := 1080
-
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 PRODUCT_GMS_CLIENTID_BASE := android-smartron
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-BUILD_FINGERPRINT="Smartron/srtphone/rimo02a:8.0.0/T5524INDURC-475/475:user/release-keys"
-PRIVATE_BUILD_DESC="rimo02a 8.0.0 T5524INDURC-475 release-keys"
+    PRIVATE_BUILD_DESC="rimo02a 8.0.0 T5524INDURC-475 release-keys"
+
+BUILD_FINGERPRINT= Smartron/srtphone/rimo02a:8.0.0/T5524INDURC-475/475:user/release-keys
 
 # Release name
 PRODUCT_RELEASE_NAME := rimo02a
