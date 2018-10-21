@@ -95,7 +95,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     audio.primary.msm8952 \
     audio.a2dp.default \
-    audio_amplifier.msm8952 \
     audio.r_submix.default \
     audio.usb.default
 
@@ -136,35 +135,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES +=  \
     $(LOCAL_PATH)/audio/dax-default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default.xml
 
-# Camera
-PRODUCT_PACKAGES += \
-    Snap
-
-ifneq ($(USE_PROPRIETARY_CAMERA),true)
-PRODUCT_PACKAGES += \
-    camera.msm8952 \
-    libqomx_core \
-    libmmcamera_interface \
-    libmmjpeg_interface
-endif
-
-PRODUCT_COPY_FILES +=  \
-    $(LOCAL_PATH)/configs/external_camera_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/external_camera_config.xml
-
-# Charger
-PRODUCT_PACKAGES += \
-    charger_res_images
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/charger/charger:$(TARGET_COPY_OUT_VENDOR)/bin/charger
-
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
     libcnefeatureconfig
-
-# Consumerir
-PRODUCT_PACKAGES += \
-    consumerir.msm8952
 
 # Data Services
 PRODUCT_PACKAGES += \
@@ -185,12 +158,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/ad_calib.cfg:system/etc/ad_calib.cfg
 
 # Doze mode
-#PRODUCT_PACKAGES += \
-#    Doze
-
-# Fingerprint
 PRODUCT_PACKAGES += \
-    fingerprint.msm8952
+    Doze
 
 # For android_filesystem_config.h
 PRODUCT_PACKAGES += \
