@@ -354,8 +354,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.lineage.build.vendor_security_patch=2016-12-01
 
 # VR
-PRODUCT_PACKAGES += \
-    vr.msm8952
+#PRODUCT_PACKAGES += \
+#    vr.msm8952
 
 # Vndk
 PRODUCT_COPY_FILES += \
