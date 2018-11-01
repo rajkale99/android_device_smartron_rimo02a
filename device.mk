@@ -238,11 +238,12 @@ PRODUCT_PACKAGES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    lights.msm8952
+    android.hardware.light@2.0-impl \
+    android.hardware.light@2.0-service
 
 # Livedisplay
-PRODUCT_PACKAGES += \
-    vendor.lineage.livedisplay@1.0-service-legacymm
+#PRODUCT_PACKAGES += \
+#    vendor.lineage.livedisplay@1.0-service-legacymm
 
 # Media
 PRODUCT_COPY_FILES += \
