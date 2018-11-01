@@ -301,6 +301,7 @@ PRODUCT_PACKAGES += \
     init.target.rc \
     init.rimo02a.usb.rc \
     init.qcom.power.rc \
+    loggy.sh \
     ueventd.qcom.rc
 
 # RCS
