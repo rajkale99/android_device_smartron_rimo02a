@@ -101,7 +101,7 @@ PRODUCT_PACKAGES += \
 
 # USB
 PRODUCT_PACKAGES += \
-    android.hardware.usb@1.0-service.basic
+    android.hardware.usb@1.0-service.msm8976
 
 # Vibrator
 PRODUCT_PACKAGES += \
