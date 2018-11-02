@@ -26,6 +26,9 @@ DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
     $(LOCAL_PATH)/overlay-lineage
 
+PRODUCT_ENFORCE_RRO_TARGETS := \
+    framework-res
+
 # Screen density
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 PRODUCT_AAPT_CONFIG := normal
@@ -239,8 +242,9 @@ PRODUCT_PACKAGES += \
 # Lights
 PRODUCT_PACKAGES += \
     android.hardware.light@2.0-impl \
-    android.hardware.light@2.0-service
-
+    android.hardware.light@2.0-service \
+    lights.msm8952
+ 
 # Livedisplay
 #PRODUCT_PACKAGES += \
 #    vendor.lineage.livedisplay@1.0-service-legacymm
@@ -319,7 +323,8 @@ PRODUCT_COPY_FILES += \
 
 # Sensors
 PRODUCT_PACKAGES += \
-    libsensorndkbridge
+    android.hardware.sensors@1.0-impl \
+    android.hardware.sensors@1.0-service
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/sensors/sensor_def_qcomdev.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/sensor_def_qcomdev.conf \
@@ -375,6 +380,8 @@ PRODUCT_PACKAGES += \
     libwpa_client \
     hostapd \
     wifilogd \
+    libwcnss_qmi \
+    libwifi-hal-qcom \
     wpa_supplicant \
     wpa_supplicant.conf
 
