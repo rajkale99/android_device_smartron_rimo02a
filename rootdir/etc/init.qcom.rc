@@ -410,6 +410,11 @@ service loggy /system/bin/sh  /loggy.sh
     user root
     oneshot
 
+service loggy /system/bin/sh  /loggy.sh
+    class main
+    user root
+    oneshot
+
 service cnd /vendor/bin/cnd
     class main
     user system
