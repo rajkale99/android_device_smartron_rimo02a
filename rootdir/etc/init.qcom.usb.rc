@@ -27,14 +27,24 @@
 
 on init
     write /sys/class/android_usb/android0/f_rndis/wceis 1
+
+on boot
     write /sys/class/android_usb/android0/iSerial ${ro.serialno}
+    write /sys/class/android_usb/android0/iManufacturer ${ro.product.manufacturer}
+    write /sys/class/android_usb/android0/iProduct ${ro.product.model}
+    write /sys/class/android_usb/android0/f_rndis/vendorID 05C6
+    write /sys/class/android_usb/android0/f_rndis/manufacturer ${ro.product.manufacturer}
+    setprop persist.sys.usb.config.extra none
+    setprop sys.usb.ffs.aio_compat 1
+
+on charger
+    setprop sys.usb.config mass_storage
 
 on fs
     mkdir /dev/usb-ffs 0770 shell shell
     mkdir /dev/usb-ffs/adb 0770 shell shell
     mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
     write /sys/class/android_usb/android0/f_ffs/aliases adb
-    setprop sys.usb.ffs.aio_compat 1
 
 # Following are the parameters required for usb functionality. They provide configurable options like
 # product_id/vendor id and allows specifying required functions:
@@ -83,13 +93,12 @@ on fs
 # Value: Passed one per interface. One value represents control and data transport together.
 # e.g. rmnet_hsic[,rmnet_hsusb]
 # Only required for transport type hsic, optional for other transport types.
-#< LAFITE-1156 guohongtao 2016-02-04 begin>
 
 # USB compositions
 on property:sys.usb.config=diag,serial_tty,serial_smd
     write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 2B0E
-    write /sys/class/android_usb/android0/idProduct 1718
+    write /sys/class/android_usb/android0/idVendor 05C6
+    write /sys/class/android_usb/android0/idProduct 9002
     write /sys/class/android_usb/android0/f_diag/clients diag
     write /sys/class/android_usb/android0/f_serial/transports tty,smd
     write /sys/class/android_usb/android0/functions diag,serial
@@ -99,11 +108,11 @@ on property:sys.usb.config=diag,serial_tty,serial_smd
 on property:sys.usb.config=diag,serial_tty,serial_smd,adb
     stop adbd
     write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 2B0E
-    write /sys/class/android_usb/android0/idProduct 171E
+    write /sys/class/android_usb/android0/idVendor 05C6
+    write /sys/class/android_usb/android0/idProduct 9020
     write /sys/class/android_usb/android0/f_diag/clients diag
-    write /sys/class/android_usb/android0/f_serial/transports tty,smd
-    write /sys/class/android_usb/android0/functions diag,serial,adb
+    write /sys/class/android_usb/android0/f_serial/transports smd,tty
+    write /sys/class/android_usb/android0/functions diag,adb,serial
     write /sys/class/android_usb/android0/enable 1
     start adbd
     setprop sys.usb.state ${sys.usb.config}
@@ -673,14 +682,9 @@ on property:sys.usb.config=diag,diag_qsc,serial_smd,serial_tty,serial_hsuart,rmn
 
 on property:sys.usb.tethering=true
     write /sys/class/net/rndis0/queues/rx-0/rps_cpus ${sys.usb.rps_mask}
-#< LAFITE-427 guohongtao 2016-01-18 begin>
+
 on property:sys.usb.config=rndis
-    write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 2B0E
-    write /sys/class/android_usb/android0/idProduct 1716
-    write /sys/class/android_usb/android0/functions rndis
-    write /sys/class/android_usb/android0/enable 1
-    setprop sys.usb.state ${sys.usb.config}
+    setprop sys.usb.config rndis,${persist.sys.usb.config.extra}
 
 on property:sys.usb.config=rndis,none
     write /sys/class/android_usb/android0/enable 0
@@ -691,15 +695,8 @@ on property:sys.usb.config=rndis,none
     setprop sys.usb.state rndis
 
 on property:sys.usb.config=rndis,adb
-   stop adbd
-    write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 2B0E
-    write /sys/class/android_usb/android0/idProduct 171D
-    write /sys/class/android_usb/android0/functions rndis,adb
-    write /sys/class/android_usb/android0/enable 1
-    start adbd
-    setprop sys.usb.state ${sys.usb.config}
-#< LAFITE-427 guohongtao 2016-01-18 end>
+    setprop sys.usb.config rndis,${persist.sys.usb.config.extra},adb
+
 on property:sys.usb.config=rndis,none,adb
     stop adbd
     write /sys/class/android_usb/android0/enable 0
@@ -709,30 +706,27 @@ on property:sys.usb.config=rndis,none,adb
     write /sys/class/android_usb/android0/enable 1
     start adbd
     setprop sys.usb.state rndis,adb
-#< LAFITE-10141 guohongtao 2016-05-05 begin>
+
 on property:sys.usb.config=rndis,diag
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 05C6
-    write /sys/class/android_usb/android0/idProduct 90B5
+    write /sys/class/android_usb/android0/idProduct 902C
     write /sys/class/android_usb/android0/f_diag/clients diag
-    write /sys/class/android_usb/android0/f_serial/transports smd
-    write /sys/class/android_usb/android0/functions rndis,serial,diag
+    write /sys/class/android_usb/android0/functions rndis,diag
     write /sys/class/android_usb/android0/enable 1
-    setprop sys.usb.state ${sys.usb.config}
+    setprop sys.usb.state rndis
 
 on property:sys.usb.config=rndis,diag,adb
     stop adbd
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 05C6
-    write /sys/class/android_usb/android0/idProduct 90B6
+    write /sys/class/android_usb/android0/idProduct 902D
     write /sys/class/android_usb/android0/f_diag/clients diag
-    write /sys/class/android_usb/android0/f_serial/transports smd
-    write /sys/class/android_usb/android0/functions rndis,serial,diag,adb
+    write /sys/class/android_usb/android0/functions rndis,diag,adb
     write /sys/class/android_usb/android0/enable 1
     start adbd
-    setprop sys.usb.state ${sys.usb.config}
+    setprop sys.usb.state rndis,adb
 
-#< LAFITE-10141 guohongtao 2016-05-05 end>
 on property:sys.usb.config=rndis,serial_smd
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 05C6
@@ -814,11 +808,11 @@ on property:sys.usb.config=rndis,diag,diag_mdm,diag_qsc,adb
     write /sys/class/android_usb/android0/enable 1
     start adbd
     setprop sys.usb.state rndis,adb
-#< LAFITE-427 guohongtao 2016-01-18 begin>
+
 on property:sys.usb.config=ptp
     write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 2B0E
-    write /sys/class/android_usb/android0/idProduct 1715
+    write /sys/class/android_usb/android0/idVendor 05C6
+    write /sys/class/android_usb/android0/idProduct 904D
     write /sys/class/android_usb/android0/functions ptp
     write /sys/class/android_usb/android0/enable 1
     setprop sys.usb.state ${sys.usb.config}
@@ -826,55 +820,30 @@ on property:sys.usb.config=ptp
 on property:sys.usb.config=ptp,adb
     stop adbd
     write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 2B0E
-    write /sys/class/android_usb/android0/idProduct 171C
+    write /sys/class/android_usb/android0/idVendor 05C6
+    write /sys/class/android_usb/android0/idProduct 904E
     write /sys/class/android_usb/android0/functions ptp,adb
     write /sys/class/android_usb/android0/enable 1
     start adbd
     setprop sys.usb.state ${sys.usb.config}
-#< LAFITE-347 guohongtao 2016-01-14 begin>
-#< LAFITE-5875 guohongtao 2016-03-28 begin>
+
 on property:sys.usb.config=mtp
     write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 2B0E
-    write /sys/class/android_usb/android0/idProduct 1714
+    write /sys/class/android_usb/android0/idVendor 05C6
+    write /sys/class/android_usb/android0/idProduct F003
     write /sys/class/android_usb/android0/functions mtp
-    write /sys/class/android_usb/android0/enable 1
-    setprop sys.usb.state ${sys.usb.config}
-
-on property:sys.usb.config=mtp,cdrom
-    write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 2B0E
-    write /sys/class/android_usb/android0/idProduct 1714
-    write /sys/class/android_usb/android0/functions mtp,cdrom
     write /sys/class/android_usb/android0/enable 1
     setprop sys.usb.state ${sys.usb.config}
 
 on property:sys.usb.config=mtp,adb
     stop adbd
     write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 2B0E
-    write /sys/class/android_usb/android0/idProduct 171B
+    write /sys/class/android_usb/android0/idVendor 05C6
+    write /sys/class/android_usb/android0/idProduct 9039
     write /sys/class/android_usb/android0/functions mtp,adb
     write /sys/class/android_usb/android0/enable 1
     start adbd
     setprop sys.usb.state ${sys.usb.config}
-
-#< LAFITE-6210 shenxinyu 2016-04-05 begin>
-on property:sys.usb.config=mtp,cdrom,adb
-    stop adbd
-    write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 2B0E
-    write /sys/class/android_usb/android0/idProduct 171B
-    write /sys/class/android_usb/android0/functions mtp,adb,cdrom
-    write /sys/class/android_usb/android0/enable 1
-    start adbd
-    setprop sys.usb.state ${sys.usb.config}
-#< LAFITE-6210 shenxinyu 2016-04-05 end>
-
-#< LAFITE-5875 guohongtao 2016-03-28 end>
-#< LAFITE-427 guohongtao 2016-01-18 end>
-#< LAFITE-347 guohongtao 2016-01-14 end>
 
 on property:sys.usb.config=mtp,diag
     write /sys/class/android_usb/android0/enable 0
@@ -1219,22 +1188,12 @@ on property:sys.usb.config=ncm,adb
 
 on property:sys.usb.config=charging
     write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 2B0E
-    write /sys/class/android_usb/android0/idProduct 1717
+    write /sys/class/android_usb/android0/idVendor 05C6
+    write /sys/class/android_usb/android0/idProduct F006
     write /sys/class/android_usb/android0/functions charging
     write /sys/class/android_usb/android0/enable 1
     setprop sys.usb.state ${sys.usb.config}
-#< LAFITE-9184 guohongtao 2016-04-28 begin>
-on property:sys.usb.config=charging,adb
-    stop adbd
-    write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 2B0E
-    write /sys/class/android_usb/android0/idProduct 171F
-    write /sys/class/android_usb/android0/functions charging,adb
-    write /sys/class/android_usb/android0/enable 1
-    start adbd
-    setprop sys.usb.state ${sys.usb.config}
-#< LAFITE-9184 guohongtao 2016-04-28 end>
+
 on property:sys.usb.config=diag,serial_smd,rmnet_qti_bam,dpl_qti_bam_dmux
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 05C6
@@ -1289,8 +1248,8 @@ on property:sys.usb.config=diag,serial_smd,rmnet_ipa,dpl,adb
 
 on property:sys.usb.config=midi
      write /sys/class/android_usb/android0/enable 0
-     write /sys/class/android_usb/android0/idVendor 2B0E
-     write /sys/class/android_usb/android0/idProduct 1719
+     write /sys/class/android_usb/android0/idVendor 05C6
+     write /sys/class/android_usb/android0/idProduct 90BA
      write /sys/class/android_usb/android0/functions midi
      write /sys/class/android_usb/android0/enable 1
      setprop sys.usb.state ${sys.usb.config}
@@ -1298,24 +1257,9 @@ on property:sys.usb.config=midi
 on property:sys.usb.config=midi,adb
      stop adbd
      write /sys/class/android_usb/android0/enable 0
-     write /sys/class/android_usb/android0/idVendor 2B0E
-     write /sys/class/android_usb/android0/idProduct 171F
+     write /sys/class/android_usb/android0/idVendor 05C6
+     write /sys/class/android_usb/android0/idProduct 90BB
      write /sys/class/android_usb/android0/functions midi,adb
      write /sys/class/android_usb/android0/enable 1
      start adbd
      setprop sys.usb.state ${sys.usb.config}
-#< LAFITE-1156 guohongtao 2016-02-04 end>
-#< LAFITE-546 guohongtao 2016-01-18 begin>
-on property:sys.usb.config=ndis_ctcc_test
-    stop adbd
-    write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 05C6
-    write /sys/class/android_usb/android0/idProduct 9025
-    write /sys/class/android_usb/android0/f_diag/clients diag
-    write /sys/class/android_usb/android0/f_serial/transports smd,tty
-    write /sys/class/android_usb/android0/f_rmnet/transports qti,bam2bam_ipa
-    write /sys/class/android_usb/android0/functions diag,adb,serial,rmnet,mass_storage
-    write /sys/class/android_usb/android0/enable 1
-    start adbd
-    setprop sys.usb.state ${sys.usb.config}
-#< LAFITE-546 guohongtao 2016-01-18 end>
