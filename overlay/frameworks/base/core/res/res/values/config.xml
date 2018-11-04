@@ -143,6 +143,7 @@
     </integer-array>
 
     <!-- Enable adjusting the button backlight -->
+    <bool name="config_button_brightness_support">true</bool>
     <bool name="config_deviceHasVariableButtonBrightness">true</bool>
 
     <!-- If enabled, capacitive keys will only light up when pressed.
