@@ -211,6 +211,7 @@ TARGET_PROVIDES_QTI_TELEPHONY_JAR := true
 # BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 
 # Wifi
+BOARD_USES_AOSP_WLAN_HAL                := true
 BOARD_HAS_QCOM_WLAN_SDK			:= true
 BOARD_WLAN_DEVICE			:= qcwcn
 BOARD_HOSTAPD_DRIVER			:= NL80211
@@ -225,7 +226,7 @@ TARGET_USES_QCOM_WCNSS_QMI              := true
 TARGET_PROVIDES_WCNSS_QMI               := true
 
 # OTA Assert
-#TARGET_OTA_ASSERT_DEVICE := s2,le_s2,le_s2_ww
+TARGET_OTA_ASSERT_DEVICE := rimo02a,srt_phone,smartton_srt_phone
 
 # inherit from the proprietary version
 -include vendor/smartron/rimo02a/BoardConfigVendor.mk

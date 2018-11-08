@@ -23,6 +23,11 @@ PRODUCT_PACKAGES += \
     android.hardware.soundtrigger@2.1-impl \
     android.hardware.soundtrigger@2.1-service
 
+# Bluetooth
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.0-service \
+    libbt-vendor
+ 
 # Camera
 PRODUCT_PACKAGES += \
     camera.device@1.0-impl \
@@ -101,7 +106,7 @@ PRODUCT_PACKAGES += \
 
 # USB
 PRODUCT_PACKAGES += \
-    android.hardware.usb@1.0-service.basic
+    android.hardware.usb@1.0-service
 
 # Vibrator
 PRODUCT_PACKAGES += \
