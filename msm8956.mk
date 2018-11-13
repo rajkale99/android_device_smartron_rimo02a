@@ -1,6 +1,6 @@
 #
-# Copyright (C) 2016 The CyanogenMod Project
-# Copyright (C) 2017-2018 The LineageOS Project
+# Copyright (C) 2015-2016 The CyanogenMod Project
+#           (C) 2017-2018 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -202,7 +202,8 @@ PRODUCT_PACKAGES += \
 
 # GNSS HAL
 PRODUCT_PACKAGES += \
-    android.hardware.gnss@1.0-impl
+    android.hardware.gnss@1.1-impl-qti \
+    android.hardware.gnss@1.1-service-qti
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -210,7 +211,13 @@ PRODUCT_PACKAGES += \
     gps.msm8952 \
     libcurl \
     libgnss \
-    libgnsspps
+    libgnsspps \
+    libgps.utils \
+    libloc_core \
+    libloc_ds_api \
+    libloc_stub \
+    liblocation_api \
+    libvehiclenetwork-native
 
 PRODUCT_PACKAGES += \
     flp.conf \
@@ -222,10 +229,8 @@ PRODUCT_PACKAGES += \
 
 # Health HAL
 PRODUCT_PACKAGES += \
-    android.hardware.health@1.0-impl \
-    android.hardware.health@1.0-convert \
-    android.hardware.health@1.0-service \
-    android.hardware.health@1.0
+    android.hardware.health@2.0-impl \
+    android.hardware.health@2.0-service
 
 # Healthd
 PRODUCT_PACKAGES += \
@@ -240,9 +245,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/manifest.xml:system/vendor/manifest.xml
 
 # IPA Manager
-#PRODUCT_PACKAGES += \
-#    ipacm \
-#    IPACM_cfg.xml
+PRODUCT_PACKAGES += \
+    ipacm \
+    IPACM_cfg.xml
 
 # IPC router config
 PRODUCT_COPY_FILES += \
@@ -330,11 +335,11 @@ PRODUCT_PACKAGES += \
     android.hardware.renderscript@1.0-impl
 
 # RIL
-#PRODUCT_PACKAGES += \
-#    telephony-ext
+PRODUCT_PACKAGES += \
+    telephony-ext
 
-#PRODUCT_BOOT_JARS += \
-#    telephony-ext
+PRODUCT_BOOT_JARS += \
+    telephony-ext
 
 # Seccomp policy
 PRODUCT_COPY_FILES += \
