@@ -17,7 +17,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifneq ($(filter hydrogen helium kenzo,$(TARGET_DEVICE)),)
+ifneq ($(filter rimo02a hydrogen helium kenzo,$(TARGET_DEVICE)),)
 
 include $(call all-makefiles-under,$(LOCAL_PATH))
 

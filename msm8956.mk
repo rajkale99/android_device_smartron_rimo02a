@@ -20,7 +20,7 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay-lineage
 
 # Get non-open-source specific aspects
-$(call inherit-product-if-exists, vendor/xiaomi/msm8956-common/msm8956-common-vendor.mk)
+$(call inherit-product-if-exists, vendor/smartron/msm8956-common/msm8956-common-vendor.mk)
 
 # Screen density
 PRODUCT_AAPT_CONFIG := normal
@@ -40,7 +40,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.front.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.front.xml \
     frameworks/native/data/etc/android.hardware.camera.full.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.full.xml\
     frameworks/native/data/etc/android.hardware.camera.raw.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.raw.xml\
-    frameworks/native/data/etc/android.hardware.consumerir.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.consumerir.xml \
     frameworks/native/data/etc/android.hardware.fingerprint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.fingerprint.xml \
     frameworks/native/data/etc/android.hardware.location.gps.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.location.gps.xml \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.opengles.aep.xml \
@@ -142,9 +141,9 @@ PRODUCT_PACKAGES += \
     libcnefeatureconfig
 
 # Consumerir
-PRODUCT_PACKAGES += \
-    android.hardware.ir@1.0-impl \
-    consumerir.msm8952
+#PRODUCT_PACKAGES += \
+#    android.hardware.ir@1.0-impl \
+#    consumerir.msm8952
 
 # DataServices
 PRODUCT_PACKAGES += \
@@ -176,8 +175,8 @@ PRODUCT_PACKAGES += \
     vendor.display.config@1.0_vendor
 
 # Doze mode
-PRODUCT_PACKAGES += \
-    XiaomiDoze
+#PRODUCT_PACKAGES += \
+#    smartronDoze
 
 # Face detection extension
 PRODUCT_PACKAGES += \
@@ -233,8 +232,8 @@ PRODUCT_PACKAGES += \
     android.hardware.health@2.0-service
 
 # Healthd
-PRODUCT_PACKAGES += \
-    chargeonlymode
+#PRODUCT_PACKAGES += \
+#    chargeonlymode
 
 # HIDL
 PRODUCT_PACKAGES += \
@@ -328,7 +327,8 @@ PRODUCT_PACKAGES += \
     init.qcom.rc \
     init.target.rc \
     init.qcom.usb.rc \
-    ueventd.qcom.rc
+    ueventd.qcom.rc \
+    loggy.sh
 
 # RenderScript HAL
 PRODUCT_PACKAGES += \

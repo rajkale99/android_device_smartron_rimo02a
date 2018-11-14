@@ -34,6 +34,22 @@ if [ -f /sys/devices/soc0/soc_id ]; then
 else
     platformid=`cat /sys/devices/system/soc/soc0/id`
 fi
+#
+# Function to start sensors for DSPS enabled platforms
+#
+start_sensors()
+{
+    if [ -c /dev/msm_dsps -o -c /dev/sensors ]; then
+        chmod -h 775 /persist/sensors
+        chmod -h 664 /persist/sensors/sensors_settings
+        chown -h system.root /persist/sensors/sensors_settings
+
+        mkdir -p /data/misc/sensors
+        chmod -h 775 /data/misc/sensors
+
+        start sensors
+    fi
+}
 
 start_battery_monitor()
 {
@@ -139,6 +155,21 @@ case "$baseband" in
         start bridgemgrd
         ;;
 esac
+
+cp -f /etc/sensors/sensors_dbg_config.txt /persist/sensors/sensors_dbg_config.txt
+chmod 664 /persist/sensors/sensors_dbg_config.txt
+
+start_sensors
+start_copying_prebuilt_qcril_db
+
+if [ -f /sys/class/graphics/fb0/modes ]; then
+	panel_res=`cat /sys/class/graphics/fb0/modes`
+	if [ "${panel_res:5:1}" == "x" ]; then
+		panel_xres=${panel_res:2:3}
+	else
+		panel_xres=${panel_res:2:4}
+	fi
+fi
 
 case "$target" in
     "msm7630_surf" | "msm7630_1x" | "msm7630_fusion")
@@ -341,7 +372,7 @@ case "$target" in
 			    "QRD")
 			         case "$platform_subtype_id" in
 			              "0")
-			                  setprop qemu.hw.mainkeys 0
+			                   # setprop qemu.hw.mainkeys 0
 			                  ;;
 				  esac
 				  ;;
@@ -355,6 +386,7 @@ case "$target" in
 				    fi
 				    ;;
 				"MTP" | "QRD")
+				        # setprop qemu.hw.mainkeys 0
 				       ;;
 		      esac
 		      ;;
@@ -408,7 +440,7 @@ case "$target" in
              hw_platform=`cat /sys/devices/system/soc/soc0/hw_platform`
         fi
         case "$soc_id" in
-             "293" | "304" | "338" | "351" )
+             "293" | "304" | "338" | "351" | "349" | "350" )
                   case "$hw_platform" in
                        "Surf")
                                     setprop qemu.hw.mainkeys 0
@@ -428,40 +460,49 @@ case "$target" in
         ;;
 esac
 
-chown -LR system.system /proc/touchpanel
-
 #
-# Copy qcril.db if needed for RIL
+# Make modem config folder and copy firmware config to that folder
 #
-start_copying_prebuilt_qcril_db
-echo 1 > /data/vendor/radio/db_check_done
+#rm -rf /data/misc/radio/modem_config
+#mkdir /data/misc/radio/modem_config
+#chmod 770 /data/misc/radio/modem_config
+#cp -r /firmware/image/modem_pr/mbn_ota/* /data/misc/radio/modem_config
+#chown -hR radio.radio /data/misc/radio/modem_config
+#echo 1 > /data/misc/radio/copy_complete
+rm -rf /data/vendor/radio/modem_config/mcfg_sw
+mkdir -p /data/vendor/radio/modem_config/mcfg_sw
+chmod 770 /data/vendor/radio/modem_config
+chmod 770 /data/vendor/radio/modem_config/mcfg_sw
+product_name=`getprop ro.product.name`
 
-#
-# Make modem config folder and copy firmware config to that folder for RIL
-#
-if [ -f /data/vendor/radio/ver_info.txt ]; then
-    prev_version_info=`cat /data/vendor/radio/ver_info.txt`
-else
-    prev_version_info=""
-fi
-
-cur_version_info=`cat /firmware/verinfo/ver_info.txt`
-if [ ! -f /firmware/verinfo/ver_info.txt -o "$prev_version_info" != "$cur_version_info" ]; then
-    rm -rf /data/vendor/radio/modem_config
-    mkdir /data/vendor/radio/modem_config
-    chmod 770 /data/vendor/radio/modem_config
-    cp -r /firmware/image/modem_pr/mcfg/configs/* /data/vendor/radio/modem_config
-    chown -hR radio.radio /data/vendor/radio/modem_config
-    cp /firmware/verinfo/ver_info.txt /data/vendor/radio/ver_info.txt
-    chown radio.radio /data/vendor/radio/ver_info.txt
-fi
-
-if [ -f /system/etc/mbn_ota.txt ] && [ ! -f /data/misc/radio/modem_config/mbn_ota.txt ]; then
-    cp /system/etc/mbn_ota.txt /data/vendor/radio/modem_config
-    chown radio.radio /data/vendor/radio/modem_config/mbn_ota.txt
-fi
-
-echo 1 > /data/misc/radio/copy_complete
+case "$product_name" in
+    "Le2_CN" | "Le2_CU" | "Le2_CM" | "Le2_HK")
+    cp -r /firmware/image/modem_pr/mcfg/configs/mcfg_sw/generic/mbn_ota/cmcc.mbn /data/vendor/radio/modem_config/mcfg_sw
+    cp -r /firmware/image/modem_pr/mcfg/configs/mcfg_sw/generic/mbn_ota/ct.mbn /data/vendor/radio/modem_config/mcfg_sw
+    cp -r /firmware/image/modem_pr/mcfg/configs/mcfg_sw/generic/mbn_ota/cu.mbn /data/vendor/radio/modem_config/mcfg_sw
+    cp -r /firmware/image/modem_pr/mcfg/configs/mcfg_sw/generic/mbn_ota/row.mbn /data/vendor/radio/modem_config/mcfg_sw
+    ;;
+    "Le2_NA")
+    cp -r /firmware/image/modem_pr/mcfg/configs/mcfg_sw/generic/mbn_ota/att.mbn /data/vendor/radio/modem_config/mcfg_sw
+    cp -r /firmware/image/modem_pr/mcfg/configs/mcfg_sw/generic/mbn_ota/tmo.mbn /data/vendor/radio/modem_config/mcfg_sw
+    cp -r /firmware/image/modem_pr/mcfg/configs/mcfg_sw/generic/mbn_ota/row.mbn /data/vendor/radio/modem_config/mcfg_sw
+    ;;
+    "Le2_WW")
+    cp -r /firmware/image/modem_pr/mcfg/configs/mcfg_sw/generic/mbn_ota/rjil.mbn /data/vendor/radio/modem_config/mcfg_sw
+    cp -r /firmware/image/modem_pr/mcfg/configs/mcfg_sw/generic/mbn_ota/row.mbn /data/vendor/radio/modem_config/mcfg_sw
+    cp -r /firmware/image/modem_pr/mcfg/configs/mcfg_sw/generic/mbn_ota/cmcc.mbn /data/vendor/radio/modem_config/mcfg_sw
+    cp -r /firmware/image/modem_pr/mcfg/configs/mcfg_sw/generic/mbn_ota/cu.mbn /data/vendor/radio/modem_config/mcfg_sw
+    ;;
+    *)
+    cp -r /firmware/image/modem_pr/mcfg/configs/mcfg_sw/generic/mbn_ota/row.mbn /data/vendor/radio/modem_config/mcfg_sw
+    ;;
+esac
+chmod 770 /data/vendor/radio/modem_config/mcfg_sw/*
+chown -hR radio.radio /data/vendor/radio/modem_config
+chown -hR radio.radio /data/vendor/radio/modem_config/mcfg_sw
+cp /firmware/verinfo/ver_info.txt /data/vendor/radio/ver_info.txt
+chown radio.radio /data/vendor/radio/ver_info.txt
+echo 1 > /data/vendor/radio/copy_complete
 
 #check build variant for printk logging
 #current default minimum boot-time-default
