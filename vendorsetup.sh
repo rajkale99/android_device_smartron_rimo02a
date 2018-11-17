@@ -1,0 +1,1 @@
+add_lunch_combo arrow_rimo02a-userdebug
