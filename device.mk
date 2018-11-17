@@ -1,4 +1,4 @@
-/#
+#
 # Copyright (C) 2015-2016 The CyanogenMod Project
 #           (C) 2017-2018 The LineageOS Project
 #
@@ -16,10 +16,14 @@
 #
 
 # Overlays
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
+DEVICE_PACKAGE_OVERLAYS += \
+    $(LOCAL_PATH)/overlay
 
 # Get non-open-source specific aspects
-$(call inherit-product-if-exists, vendor/smartron/rimo02a-vendor.mk)
+$(call inherit-product, vendor/smartron/rimo02a/rimo02a-vendor.mk)
+
+PRODUCT_ENFORCE_RRO_TARGETS := \
+    framework-res
 
 # Screen density
 PRODUCT_AAPT_CONFIG := normal
@@ -290,7 +294,9 @@ PRODUCT_PACKAGES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    android.hardware.light@2.0-service.aw2013
+    android.hardware.light@2.0-impl \
+    android.hardware.light@2.0-service \
+    lights.msm8952
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -332,7 +338,7 @@ PRODUCT_PACKAGES += \
     android.hardware.power@1.1-service-qti
 
 # QPerformance
-PRODUCT_BOOT_JARS += QPerformance
+#PRODUCT_BOOT_JARS += QPerformance
 
 # Qualcomm dependencies
 PRODUCT_PACKAGES += \
@@ -441,7 +447,7 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/p2p_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/p2p_supplicant_overlay.conf \
-    $(LOCAL_PATH)/wifi/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf
+    $(LOCAL_PATH)/wifi/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_wlan_nv.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_wlan_nv_b3gbl.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv_b3gbl.bin
 

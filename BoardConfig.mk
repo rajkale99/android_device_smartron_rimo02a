@@ -47,7 +47,8 @@ TARGET_NO_BOOTLOADER := true
 BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 ramoops_memreserve=4M
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_PAGESIZE := 2048 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
+BOARD_KERNEL_PAGESIZE := 2048
+BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
@@ -180,15 +181,15 @@ USE_DEVICE_SPECIFIC_LOC_API := true
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
 
 # Init
-TARGET_INIT_VENDOR_LIB := libinit_rimo02a
 TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
+TARGET_INIT_VENDOR_LIB := libinit_rimo02a
 TARGET_RECOVERY_DEVICE_MODULES := libinit_rimo02a
 
 # Keymaster
 TARGET_PROVIDES_KEYMASTER := true
 
 # Lights
-BOARD_LIGHTS_VARIANT := aw2013
+#BOARD_LIGHTS_VARIANT := aw2013
 TARGET_PROVIDES_LIBLIGHT := true
 
 # Lineage Hardware
@@ -239,4 +240,4 @@ WIFI_DRIVER_FW_PATH_AP      := "ap"
 WIFI_DRIVER_FW_PATH_STA     := "sta"
 
 # inherit from the proprietary version
--include vendor/smartron/rimo02a/BoardConfig.mk
+-include vendor/smartron/rimo02a/BoardConfigVendor.mk

@@ -16,5 +16,4 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/full_rimo02a.mk \
     $(LOCAL_DIR)/arrow_rimo02a.mk
