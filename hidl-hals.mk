@@ -25,9 +25,20 @@ PRODUCT_PACKAGES += \
 
 # Bluetooth
 PRODUCT_PACKAGES += \
+<<<<<<< HEAD
     android.hardware.bluetooth@1.0-service \
     libbt-vendor
  
+=======
+    android.hardware.bluetooth@1.0-impl \
+    android.hardware.bluetooth@1.0-service \
+    libbt-vendor
+
+# Bluetooth
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.0-service
+
+>>>>>>> 54018545324b34c03dcb2d6a3c6a927647d90869
 # Camera
 PRODUCT_PACKAGES += \
     camera.device@1.0-impl \

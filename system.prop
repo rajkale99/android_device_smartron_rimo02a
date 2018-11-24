@@ -117,6 +117,7 @@ mm.enable.qcom_parser=4194303
 ro.use_data_netmgrd=true
 persist.data.netmgrd.qos.enable=true
 persist.data.mode=concurrent
+persist.data.iwlan.enable=true
 
 # NITZ
 persist.rild.nitz_plmn=

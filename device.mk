@@ -89,7 +89,8 @@ PRODUCT_COPY_FILES += \
 # ANT+
 PRODUCT_PACKAGES += \
     AntHalService \
-    com.dsi.ant.antradio_library
+    com.dsi.ant.antradio_library \
+    libantradio
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -320,6 +321,11 @@ PRODUCT_COPY_FILES += \
 
 # Sensors
 PRODUCT_PACKAGES += \
+<<<<<<< HEAD
+=======
+    android.hardware.sensors@1.0-impl \
+    android.hardware.sensors@1.0-service \
+>>>>>>> 54018545324b34c03dcb2d6a3c6a927647d90869
     libsensorndkbridge
 
     PRODUCT_COPY_FILES += \
@@ -395,10 +401,16 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat \
+<<<<<<< HEAD
     $(LOCAL_PATH)/wifi/WCNSS_qcom_cfg.ini:system/etc/wifi \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_wlan_nv.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_wlan_nv_nofem.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv_nofem.bin
 
+=======
+    $(LOCAL_PATH)/wifi/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/WCNSS_qcom_cfg.ini \
+    $(LOCAL_PATH)/wifi/WCNSS_wlan_dictionary.dat:system/etc/firmware/wlan/prima/WCNSS_wlan_dictionary.dat
+    
+>>>>>>> 54018545324b34c03dcb2d6a3c6a927647d90869
 # SDcard
 PRODUCT_CHARACTERISTICS := nosdcard
 

@@ -257,8 +257,13 @@ mkdir /data/vendor/ipa 0770 radio radio
 chmod 0770 /data/vendor/ipa
 
 #Create QTI dir for logs
+<<<<<<< HEAD
 mkdir /data/vendor/dataqti 0770 radio radio
 chmod 0770 /data/vendor/dataqti
+=======
+#mkdir /data/vendor/dataqti 0770 radio radio
+#chmod 0770 /data/vendor/dataqti
+>>>>>>> 54018545324b34c03dcb2d6a3c6a927647d90869
 
 # Create the directories used by CnE subsystem
 mkdir /data/connectivity 0771 system system
